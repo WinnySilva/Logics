@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 6c79d95c48b62a744afe21eba6f868f6
+timeCreated: 1495797262
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: AR BERKLEY
+  fontNames:
+  - AR BERKLEY
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

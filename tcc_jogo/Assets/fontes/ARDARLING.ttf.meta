@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: fb03ccd8d054d9c4abb6e1e755a8e8ee
+timeCreated: 1495797262
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: AR DARLING
+  fontNames:
+  - AR DARLING
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

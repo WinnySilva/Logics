@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 630babe74bcac584684203e2f0fc49e7
+timeCreated: 1495797262
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: AR DECODE
+  fontNames:
+  - AR DECODE
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
