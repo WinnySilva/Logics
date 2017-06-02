@@ -106,7 +106,7 @@ namespace Google.Cast.RemoteDisplay.UI {
     private void ResetDialog() {
       titleText.text = "Cast para";
       if (currentButtons.Count == 0) {
-        statusText.text = "Procurando dispositos";
+        statusText.text = "Procurando dispositivos";
         searchingElements.SetActive(true);
         listNotFoundElements.SetActive(false);
         listFoundElements.SetActive(false);

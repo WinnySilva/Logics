@@ -134,7 +134,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 					posAtual = jogadores[jogadorSelecionado].GetComponent<Jogador>().PosTabuleiro;
 					//int rnd = Random.Range(1, );
 					jogadores[jogadorSelecionado].GetComponent<Jogador>().Pontuacao+=nSen;
-						MoverPeao(jogadorSelecionado,nSen);// tabuleiro.GetComponent<Tabuleiro>().NCasas);//
+					MoverPeao(jogadorSelecionado,posAtual+nSen);// tabuleiro.GetComponent<Tabuleiro>().NCasas);//
 
 				}
 				posAtual = jogadores[jogadorSelecionado].GetComponent<Jogador>().PosTabuleiro;
@@ -190,11 +190,12 @@ public class PartidaManager : ManagerSceneTopLevel {
 		Jogador j = jogadores[p].GetComponent<Jogador>();
 
 		tabuleiro.GetComponent<Tabuleiro>().SetarPeao(pos,j);
-
-		EnfocarCameraTV(tabuleiro.GetComponent<Tabuleiro>().GetCasaTransform(pos).position);
+		Debug.Log("MOVER PEAO");
+		//EnfocarCameraTV(tabuleiro.GetComponent<Tabuleiro>().GetCasaTransform(pos).position);
 		if(pos>= tabuleiro.GetComponent<Tabuleiro>().NCasas){
 			ganhador = true;
 		}
+
 
 	}
 	public void EnfocarCameraTV(Vector3 position){

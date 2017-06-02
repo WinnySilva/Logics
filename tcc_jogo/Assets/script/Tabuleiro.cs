@@ -109,6 +109,7 @@ public class Tabuleiro : MonoBehaviour {
 	// 4 x 2
 	//   3
 	private void gerarTabuleiro(){
+		Debug.Log(" GERANDO TABULEIRO");
 		int[][] dirCasas = persistencia.CasasTabuleiro;
 
 		int dirCount=0;
@@ -152,7 +153,7 @@ public class Tabuleiro : MonoBehaviour {
 //			auxLinha.transform.GetChild(coluna).gameObject.AddComponent<Image>();
 			casa = auxLinha.transform.GetChild(coluna).gameObject.GetComponent<Image>();
 			auxLinha.transform.GetChild(coluna).gameObject.SetActive(true);
-			casa.color = new Color(1,1,0);
+			casa.color = new Color(0.384f,0.047f,0.372f);
 		}
 	}
 

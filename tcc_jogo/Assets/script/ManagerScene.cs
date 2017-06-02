@@ -19,6 +19,7 @@ public class ManagerScene: MonoBehaviour{
 
 
 	void Start () {
+		Debug.Log(" MANAGER SCENE");
 		displayManager = CastRemoteDisplayManager.GetInstance();
 		displayManager.RemoteDisplaySessionStartEvent.AddListener(OnRemoteDisplaySessionStart);
 		displayManager.RemoteDisplaySessionEndEvent.AddListener(OnRemoteDisplaySessionEnd);
@@ -29,11 +30,12 @@ public class ManagerScene: MonoBehaviour{
 		pausePanel.SetActive(false);
 		pauseButton.SetActive(false);
 		
-	*/	
-		foreach(CastDevice cd in  displayManager.GetCastDevices()){
-			Debug.Log(cd.DeviceName+" :: "+cd.DeviceId+"  :: " +cd.Status );
 
-		}
+		foreach(CastDevice cd in  displayManager.GetCastDevices()){
+			Debug.Log("DEVICES ENCONTRADOS: "+cd.DeviceName+" :: "+cd.DeviceId+"  :: " +cd.Status );
+
+		}*/
+
 
 	}
 	void Update(){
@@ -45,7 +47,7 @@ public class ManagerScene: MonoBehaviour{
 		pauseButton.SetActive(true);
 */
 		Debug.Log("SESSION START");
-		persistencia.CarregarCena(TelaCarregamento.ESCOLHAPERSONAGEM );
+	persistencia.CarregarCena(TelaCarregamento.AGUARDANDO_JOGADORES );
 
 	}
 

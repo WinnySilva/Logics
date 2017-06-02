@@ -71,6 +71,6 @@ public class MainMenu : MonoBehaviour {
 		persistencia.CarregarCena(0);
 	}
 	public void OpcaoCredito(){
-		persistencia.CarregarCena(0);
+		persistencia.CarregarCena(1);
 	}
 }

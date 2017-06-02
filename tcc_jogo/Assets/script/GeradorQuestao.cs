@@ -18,7 +18,20 @@ public class GeradorQuestao {
 
 	public GeradorQuestao(){
 		sentencas = new Dictionary<string,bool>();
-		string text = System.IO.File.ReadAllText("./Assets/Resources/questions/sentencas2.csv",Encoding.UTF8 );
+		string path = "./Assets/Resources/questions/sentencas2.csv";
+		TextAsset textAsset= Resources.Load("questions/sentencas2") as TextAsset;
+
+		string text = "";
+		if( textAsset !=null  ){
+			Debug.Log(" CARREGANDO: exists");
+			text = textAsset.text;// System.IO.File.ReadAllText(path, Encoding.UTF8);
+		}else{
+			Debug.Log(" CARREGANDO: not exists");
+			text = "todos o azul é vermelho;0\n" +
+				"todos coloridos são pretos;0\no sol é quente;1\na pedra é mole;0";
+
+		}
+
 		string[] splitSeparador= new string[] {";","\n"};
 		string[] split = text.Split(splitSeparador,StringSplitOptions.RemoveEmptyEntries);
 		rnd = new System.Random();

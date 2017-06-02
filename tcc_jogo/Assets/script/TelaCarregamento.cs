@@ -10,7 +10,8 @@ public class TelaCarregamento : MonoBehaviour {
 	private int proximacena;
 	private GameObject data;
 	public   const  int MENU = 0;
-	public   const  int CREDITOS=1, ESCOLHAPERSONAGEM=2, CARREGAMENTO=3, CLASSIFICACAO=4,PARTIDA=5,MAPA=6,CONECTAR_CHROMECAST=7;
+	public   const  int CREDITOS=1, ESCOLHAPERSONAGEM=2, CARREGAMENTO=3, 
+	CLASSIFICACAO=4,PARTIDA=5,MAPA=6,CONECTAR_CHROMECAST=7, AGUARDANDO_JOGADORES=8;
 	private Persistencia p;
 	void Awake(){
 		data = GameObject.Find("persistencia");
@@ -20,7 +21,7 @@ public class TelaCarregamento : MonoBehaviour {
 
 		proximacena = p.ProximacenaIndex;
 
-		Debug.Log(proximacena);
+		Debug.Log(" CARREGANDO: "+proximacena);
 
 		switch(proximacena){
 		case TelaCarregamento.MENU:
@@ -50,11 +51,17 @@ public class TelaCarregamento : MonoBehaviour {
 		case TelaCarregamento.PARTIDA:
 			this.transform.Find("carregando_identificacao").GetComponent<Text>().text=
 				"Partida";
+			Debug.Log(" CARREGANDO: partida");
 			loadPartida();
+			Debug.Log(" CARREGANDO: partida carregada");
 			break;
 		case TelaCarregamento.CONECTAR_CHROMECAST:
 			this.transform.Find("carregando_identificacao").GetComponent<Text>().text=
 				"CONECTAR CHROMECAST";
+			break;
+		case TelaCarregamento.AGUARDANDO_JOGADORES :
+			this.transform.Find("carregando_identificacao").GetComponent<Text>().text=
+				"NÚMERO DE JOGADORES";
 			break;
 		default:
 			proximacena = 0;			
@@ -63,6 +70,7 @@ public class TelaCarregamento : MonoBehaviour {
 
 		}
 //		Debug.Log(proximacena);
+		Debug.Log(" CARREGAR CENA ");
 		SceneManager.LoadScene(proximacena);
 	}
 
@@ -75,9 +83,20 @@ public class TelaCarregamento : MonoBehaviour {
 	
 	}
 	private void loadPartida(){
-
+		Debug.Log(" CARREGANDO: MAPA");
 		//carrega mapa
-		string text = System.IO.File.ReadAllText("./Assets/Resources/maps/mapa_.csv");
+		string path = "./Assets/Resources/maps/mapa_.csv";
+		string text ="";
+		TextAsset textAsset= Resources.Load("maps/mapa_") as TextAsset;
+
+		if( textAsset != null ){
+			Debug.Log(" CARREGANDO: exists");
+			text = textAsset.text; //System.IO.File.ReadAllText(path);
+		}else{
+			Debug.Log(" CARREGANDO: not exists");
+			text = "0;0\n2;1\n2;0\n2;0\n2;1\n2;0\n2;0\n2;1";
+		}
+
 		string[] splitSeparador= new string[] {";","\n"};
 		string[] split = text.Split(splitSeparador,StringSplitOptions.RemoveEmptyEntries);
 

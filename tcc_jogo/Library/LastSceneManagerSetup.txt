@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/scenes/televisao/_aguardando_jogadores.unity
+- path: Assets/scenes/televisao/_main.unity
   isLoaded: 1
   isActive: 1

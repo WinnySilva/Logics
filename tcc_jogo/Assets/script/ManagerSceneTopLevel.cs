@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using Google.Cast.RemoteDisplay;
+using UnityEngine;
 
 public class ManagerSceneTopLevel : MonoBehaviour {
 
@@ -11,12 +11,12 @@ public class ManagerSceneTopLevel : MonoBehaviour {
 
 	void Awake(){
 	//	persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
-	/*	displayManager = CastRemoteDisplayManager.GetInstance();
+		displayManager = CastRemoteDisplayManager.GetInstance();
 		displayManager.RemoteDisplayCamera = tv_camera.GetComponent<Camera>() ;
 		displayManager.RemoteAudioListener = tv_camera.GetComponent<AudioListener>();
 		persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
 		Debug.Log("TOP LEVEL");
-	*/	setCommom();
+		setCommom();
 	}
 
 	public void setCommom(){
@@ -24,7 +24,7 @@ public class ManagerSceneTopLevel : MonoBehaviour {
 		displayManager.RemoteDisplayCamera = tv_camera.GetComponent<Camera>() ;
 		displayManager.RemoteAudioListener = tv_camera.GetComponent<AudioListener>();
 		persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
-		Debug.Log("TOP LEVEL");
+		Debug.Log("MANAGER SCENE TOP LEVEL");
 	}
 
 	// Use this for initialization
