@@ -52,14 +52,20 @@ public class GeradorQuestao {
                 String line;
                 //ArrayList<String> sentencas = new ArrayList<>();
                 String[] splitted;
+                String auxUpper;
                 rnd = new Random();
 		
                 while ( ( line = br.readLine() ) != null )  {
+                    
                     System.out.println(line );
                     splitted = line.split(";");
-                    sentencas.add(splitted[0].toLowerCase() );
+                    auxUpper = splitted[0];
+                    //if(auxUpper.length()>2){
+                    sentencas.add(auxUpper.substring(0, 1).toUpperCase()+auxUpper.substring(1) );
                     sentencas.add(splitted[1]);
                     //System.out.println(line+" "+splitted[0]+" : " + splitted[1] );
+                   // }
+                    
                 }
                 
                  } catch (Exception e) {

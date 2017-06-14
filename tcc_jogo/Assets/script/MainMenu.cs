@@ -27,7 +27,7 @@ public class MainMenu : MonoBehaviour {
 		persistencia = p.GetComponent<Persistencia>();
 
 
-		DontDestroyOnLoad(this);
+	//	DontDestroyOnLoad(this);
 		DontDestroyOnLoad(p);
 
 		persistencia = p.GetComponent<Persistencia>();

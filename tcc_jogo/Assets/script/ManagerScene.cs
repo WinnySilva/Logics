@@ -12,6 +12,7 @@ public class ManagerScene: MonoBehaviour{
 	private GameObject castUIController;
 	private Persistencia persistencia;
 	CastRemoteDisplayManager displayManager;
+	public ManagerSceneTopLevel mstl;
 
 	void Awake(){
 		
@@ -20,12 +21,15 @@ public class ManagerScene: MonoBehaviour{
 
 	void Start () {
 		Debug.Log(" MANAGER SCENE");
+
 		displayManager = CastRemoteDisplayManager.GetInstance();
 		displayManager.RemoteDisplaySessionStartEvent.AddListener(OnRemoteDisplaySessionStart);
 		displayManager.RemoteDisplaySessionEndEvent.AddListener(OnRemoteDisplaySessionEnd);
 		displayManager.RemoteDisplayErrorEvent.AddListener(OnRemoteDisplayError);
 		castUIController = GameObject.Find("CastDefaultUI");
 		persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
+
+		DontDestroyOnLoad(this);
 		/*
 		pausePanel.SetActive(false);
 		pauseButton.SetActive(false);
@@ -35,6 +39,7 @@ public class ManagerScene: MonoBehaviour{
 			Debug.Log("DEVICES ENCONTRADOS: "+cd.DeviceName+" :: "+cd.DeviceId+"  :: " +cd.Status );
 
 		}*/
+
 
 
 	}
@@ -48,11 +53,11 @@ public class ManagerScene: MonoBehaviour{
 */
 		Debug.Log("SESSION START");
 	persistencia.CarregarCena(TelaCarregamento.AGUARDANDO_JOGADORES );
-
 	}
 
 	public void OnRemoteDisplaySessionEnd(CastRemoteDisplayManager manager) {
 		Debug.Log("SESSION END");
+		persistencia.CarregarCena(TelaCarregamento.CONECTAR_CHROMECAST );
 	}
 
 	public void OnRemoteDisplayError(CastRemoteDisplayManager manager) {

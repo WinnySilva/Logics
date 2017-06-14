@@ -10,7 +10,7 @@ public class Jogador : MonoBehaviour {
 	private string nick;
 	public GameObject peao;
 	public GameObject personagem;
-	private int nPersonagens=6; // iniciando no numero 1
+	private int nPersonagens=8; // iniciando no numero 1
 	private bool visivel = true;
 	private int posTabuleiro=0;
 	// Use this for initialization
@@ -66,14 +66,10 @@ public class Jogador : MonoBehaviour {
 		peao.GetComponent<RectTransform>().SetParent(this.GetComponent<RectTransform>());
 		personagem.GetComponent<RectTransform>().SetParent(this.GetComponent<RectTransform>());
 
-
-
 		peao.name="peao";
 		personagem.name = "personagem";
 
-
-
-		this.setPersonagem(1,true);
+		this.setPersonagem(0);
 	}
 	public JogadorInfo GetInfo(){
 		JogadorInfo jog = new JogadorInfo();
@@ -94,7 +90,7 @@ public class Jogador : MonoBehaviour {
 		this.nick = info.nick;
 		this.nPersonagens = info.nPersonagens;
 
-		this.setPersonagem(info.numeroPersonagem, info.sexo );
+		this.setPersonagem(info.numeroPersonagem );
 		this.Visibilidade(info.visivel);
 
 		this.name = info.name;
@@ -191,6 +187,7 @@ public class Jogador : MonoBehaviour {
 		}else{
 			nome+="M";
 		}
+
 		if(person<0 && person>5){
 			Debug.Log("FORA DO RANGE");
 		}
@@ -229,5 +226,56 @@ public class Jogador : MonoBehaviour {
 			
 	}
 
+	// PERSON 1 - 8	
+	public void setPersonagem(int person){
+
+		string path = "";
+		string nome = "";
+
+		if(person<0 && person>8){
+			Debug.Log("personagem não existe");
+		}
+		Color cor_peao;
+		switch(person){
+		case 0:
+			cor_peao= new Color(0,1f,0);
+			break;
+		case 1:
+			cor_peao= new Color(0,1f,0);
+			break;
+		case 2:
+			cor_peao= new Color(0,0,1f);			
+			break;
+		case 3:
+			cor_peao= new Color(1.000f, 0.000f, 1.00f);
+			break;
+		case 4:
+			cor_peao= new Color(1f,0,0);
+			break;
+		case 5:
+			cor_peao= new Color(1.000f, 0.647f, 0.000f);
+			break;
+		case 6:
+			cor_peao= new Color(0.000f, 0.502f, 0.502f);
+			break;
+		case 7:
+			cor_peao= new Color(0,1f,0);
+			break;
+		case 8:
+			cor_peao= new Color(0,1f,0);
+			break;
+		default:
+			cor_peao=new Color(0,0,1);
+			break;
+		}
+		peao.GetComponent<Image>().color = cor_peao;
+		nome +=person;
+		path= "img/personagens/"+nome+"";
+		//personagem.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(path);
+		Sprite sp = Resources.Load<Sprite>(path);
+		personagem.GetComponent<Image>().sprite=sp ;
+		numeroPersonagem= person;
+
+	}
 
 }

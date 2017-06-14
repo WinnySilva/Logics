@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-public class classificacaoManager : MonoBehaviour {
+public class classificacaoManager : ManagerSceneTopLevel {
 	public GameObject classPlaceHolder;
-	public Persistencia persistencia;
+	//public Persistencia persistencia;
 	// Use this for initialization
 	void Start () {
-	
+		base.setCommom();	
 	}
 	
 	// Update is called once per frame
@@ -14,9 +14,9 @@ public class classificacaoManager : MonoBehaviour {
 	
 	}
 	void Awake(){
-		persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
-		if(persistencia==null){
-			Debug.Log("persistencia é null ");
+		base.persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
+		if(base.persistencia==null){
+			Debug.Log("classificacao: persistencia é null ");
 		}
 		JogadorInfo[] jogadorInf = persistencia.jogadoresInfo;
 		GameObject[] classif = new GameObject[jogadorInf.Length];

@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEngine.SceneManagement;
 
 public class PartidaManager : ManagerSceneTopLevel {
 	#region Public data
@@ -14,6 +15,13 @@ public class PartidaManager : ManagerSceneTopLevel {
 	public GameObject jogadoresPlaceHolder;
 	//bool showpopup = false;
 	public int showpopupsecs=0;
+	public Text nickJogador_tv;
+	public Text nickJogador_cel;
+	public Text pontosJogador;
+	public Image jogadorAvatar;
+	public Text msgPopUp;
+	public AudioSource respostaCertaAudio;
+	public AudioSource respostaErradaAudio;
 	#endregion
 
 	#region Private data
@@ -23,9 +31,9 @@ public class PartidaManager : ManagerSceneTopLevel {
 	private bool respostaCerta ;
 	private bool condRespondido = false;
 	private bool anim = false;
-	private int fade =0;
+//	private int fade =0;
 	private Thread questionamentos;
-	private Text msgPopUp;
+
 	private const int	PERGUNTANDO=0, RESPONDENDO=1, MOVENDO=2, INICIO=3,TERMINO=4 ;
 
 	int jogadorSelecionado=0;
@@ -61,7 +69,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 			msg+=jogadores[i].name+"\n";
 			tabuleiro.GetComponent<Tabuleiro>().SetarPeao(0,jogadores[i].GetComponent<Jogador>());
 		}
-		msgPopUp = mensagemPopUpTV.GetComponentInChildren<Text>();
+	//	msgPopUp = mensagemPopUpTV.GetComponentInChildren<Text>();
 		ShowMessage(false,msg,false,false);
 		gQ = persistencia.gQuestao;
 
@@ -80,7 +88,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 	#region Update
 	// Update is called once per frame
 	void Update () {
-		
+		Debug.Log("Partida Manager UPDATE: "+base.debugInfo() );
 
 	}
 	#endregion
@@ -95,6 +103,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 	private IEnumerator Controle(){
 		int posAtual;
 		while(estadoMaquina > -1){
+			Debug.Log("jogador: "+jogadorSelecionado);
 		switch(estadoMaquina){
 		case INICIO:					
 			if(!anim){
@@ -109,7 +118,10 @@ public class PartidaManager : ManagerSceneTopLevel {
 
 				Debug.Log("PERGUNTANDO");
 				Pergunta(nSen);
-
+					this.nickJogador_tv.text="JOGADOR "+(jogadorSelecionado+1);
+					this.nickJogador_cel.text="JOGADOR "+(jogadorSelecionado+1);
+					this.pontosJogador.text = ""+jogadores[jogadorSelecionado].GetComponent<Jogador>().Pontuacao;
+					this.jogadorAvatar.sprite = jogadores[jogadorSelecionado].GetComponent<Jogador>().Personagem.GetComponent<Image>().sprite;
 					this.EnfocarCameraTV(
 						jogadores[jogadorSelecionado].GetComponent<Jogador>().Peao.transform.position  );
 				estadoMaquina = RESPONDENDO;
@@ -132,13 +144,16 @@ public class PartidaManager : ManagerSceneTopLevel {
 				Debug.Log("MOVENDO");
 				if(TesteResposta()){
 					posAtual = jogadores[jogadorSelecionado].GetComponent<Jogador>().PosTabuleiro;
-					//int rnd = Random.Range(1, );
+						int rnd = Random.Range(1,6 );
 					jogadores[jogadorSelecionado].GetComponent<Jogador>().Pontuacao+=nSen;
-					MoverPeao(jogadorSelecionado,posAtual+nSen);// tabuleiro.GetComponent<Tabuleiro>().NCasas);//
-
-				}
+					MoverPeao(jogadorSelecionado,posAtual+rnd);// tabuleiro.GetComponent<Tabuleiro>().NCasas);//
+						this.respostaCertaAudio.Play();
+					}else{
+						this.respostaErradaAudio.Play();
+					}
 				posAtual = jogadores[jogadorSelecionado].GetComponent<Jogador>().PosTabuleiro;
-				//testa se chegou ao final
+
+					//testa se chegou ao final
 					if(posAtual>= tabuleiro.GetComponent<Tabuleiro>().NCasas-1){
 						estadoMaquina = TERMINO;	
 					}else{
@@ -170,6 +185,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 		}
 
 	}
+		
 
 	private void Pergunta(int nivel){
 		List<string> sentencas = gQ.GerarSentencas(nivel);
@@ -181,7 +197,8 @@ public class PartidaManager : ManagerSceneTopLevel {
 		opcoes.SetActive(true);
 
 		this.respostaCerta = gQ.Validade(sentencas);
-	//	yield return new WaitUntil(() => condRespondido== true);	
+	//	yield return new WaitUntil(() => condRespondido== true);
+//		UnityEditor.SceneView.RepaintAll();
 	}
 
 	public void MoverPeao(int p, int pos){
@@ -190,7 +207,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 		Jogador j = jogadores[p].GetComponent<Jogador>();
 
 		tabuleiro.GetComponent<Tabuleiro>().SetarPeao(pos,j);
-		Debug.Log("MOVER PEAO");
+		Debug.Log("MOVER PEAO - jogador:"+p+" para posicao: "+pos);
 		//EnfocarCameraTV(tabuleiro.GetComponent<Tabuleiro>().GetCasaTransform(pos).position);
 		if(pos>= tabuleiro.GetComponent<Tabuleiro>().NCasas){
 			ganhador = true;
@@ -198,9 +215,17 @@ public class PartidaManager : ManagerSceneTopLevel {
 
 
 	}
+
 	public void EnfocarCameraTV(Vector3 position){
-		base.tv_camera.transform.position = new Vector3(position.x,position.y,0);
+		float z = base.tv_camera.transform.position.z;
+		base.tv_camera.transform.position = new Vector3(position.x,position.y, z);
+		Debug.Log("EnfocarCameraTV posicao: "+position);
+		Scene scene = SceneManager.GetActiveScene();
+
+		Debug.Log("Repaint All ");
 	}
+
+
 	public IEnumerator ShowPopUp(int seconds, string msg, bool coroa){
 		anim = true;
 		// seta a coroa
@@ -239,7 +264,8 @@ public class PartidaManager : ManagerSceneTopLevel {
 		msgPopUp.text = msg;
 		mensagemPopUpTV.SetActive(showMSG);
 		opcoes.gameObject.SetActive(showOPC);
-		mensagemPopUpTV.transform.GetChild(1).gameObject.SetActive(premiacao);
+		int nchild= mensagemPopUpTV.transform.childCount-1;
+		mensagemPopUpTV.transform.GetChild(nchild).gameObject.SetActive(premiacao);
 	}
 
 		
@@ -262,7 +288,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 			msg = " RESPOSTA ERRADA";
 		}
 
-		Debug.Log(msg + " "+ respostaJogador +" "+respostaCerta );
+		Debug.Log("jogador: "+jogadorSelecionado+ " resposta dada: "+ respostaJogador +" resposta da pergunta: "+respostaCerta );
 		return acerto;
 	}
 

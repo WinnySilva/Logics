@@ -24,12 +24,12 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 	void Start () {
 		iniciarJogadores(2);
 		SelecionarJogador(0);
-
+		//nick.gameObject.transform.position = Camera.main.ViewportToWorldPoint(new Vector3());
 	}
 
+
 	public void iniciarJogadores(int nJogadores){
-		
-	
+			
 		jogadores = JogadorInfo.gerarJogadores(base.persistencia.jogadoresInfo) ; // GameObject.FindGameObjectsWithTag("Player");
 		bool jogadoresAtivos = jogadores !=null; 
 
@@ -42,35 +42,39 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 			nJog = nJogadores;
 			jogadores = new GameObject[nJog];
 
-			Debug.Log(" NÃO ENCONTRADOS");
+			Debug.Log(" NÃO ENCONTRADOS JOGADORES ");
 		}
 
-
+		Jogador jog =null;
 		for(int i=0; i<nJog; i++ ){
-
-			if( !jogadoresAtivos ){
+			Debug.Log(" jogadoresAtivos: "+jogadoresAtivos);
+			jog = jogadores[i].GetComponent<Jogador>();
+			if( !jogadoresAtivos || (jogadores[i] == null) ){
 				jogadores[i] = Instantiate(Resources.Load("prefabs/jogador") ) as GameObject;
 			//	jogadores[i].AddComponent<RectTransform>();
 			//	jogadores[i].AddComponent<Jogador>();
 				jogadores[i].name="JOGADOR"+i;
-				jogadores[i].GetComponent<Jogador>().setPersonagem(1 ,true);
+				jog.setPersonagem(0);
 				//	jogadores[i].GetComponent<RectTransform>().localPosition;
-				jogadores[i].GetComponent<Jogador>().Nick="JOGADOR "+i;
-				jogadores[i].GetComponent<Jogador>().SetScalePersonagem(new Vector3(0.007f,0.0047f,0));
+				jog.Nick="JOGADOR "+i;
+				jog.SetScalePersonagem(new Vector3(0.007f,0.0047f,0));
 			}
 			else{
-				jogadores[i].GetComponent<Jogador>().SetScalePersonagem(new Vector3(0.4f,0.37f,0));
+				jogadores[i].GetComponent<Jogador>().SetScalePersonagem(new Vector3(1f,1f,1f));
 			}
 
 			jogadores[i].GetComponent<RectTransform>().SetParent(placeholderPersonagem.transform); //(this.GetComponent<RectTransform>());
-			jogadores[i].transform.localPosition=new Vector3(0,-296,0);
-			jogadores[i].GetComponent<Jogador>().SetPositionPeao( new Vector3(4.11f,-0.42f,0) );
-			jogadores[i].GetComponent<Jogador>().SetScalePeao( new Vector3(0.001f,0.001f,0) );
+			jogadores[i].transform.localPosition=new Vector3(10,0,0);
+			//jog.SetPositionPeao( new Vector3(4.11f,-0.42f,0) );
+			//jog.SetScalePeao( new Vector3(0.01f,0.01f,0) );
+			//jog.peao.transform.localPosition = new Vector3(4.11f,-0.42f,0);
 
+			jog.personagem.transform.localPosition = new Vector3(0,0,0);
 						//Debug.Log(jogadores[i].GetComponent.<RectTransform>().localPosition );
 			//Debug.Log(jogadores[i].GetComponent<RectTransform>().position );
 			jogadores[i].GetComponent<Jogador>().Visibilidade(false);
-
+			//jogadores[i].GetComponent<RectTransform>().rect.width=1;
+			//jogadores[i].GetComponent<RectTransform>().rect.height =1;
 		}
 
 
@@ -100,7 +104,7 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 			DontDestroyOnLoad(persistencia);
 */
 
-			persistencia.CarregarCena(TelaCarregamento.PARTIDA);
+			persistencia.CarregarCena(TelaCarregamento.EXPLICACAO);
 			return;
 		}
 		SelecionarJogador(jogSelecionado);
@@ -129,7 +133,7 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 			jogadores[jogSelecionado].GetComponent<Jogador>().Nick; 
 		pontuacao.text =
 			""+jogadores[jogSelecionado].GetComponent<Jogador>().Pontuacao+" "+(jogadores[jogSelecionado].GetComponent<Jogador>().Pontuacao==1?"ponto":"pontos" ) ;
-
+		
 		return jog;
 	}
 	public GameObject GetJogador(int n){
@@ -144,7 +148,7 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 		}
 		Jogador j = jogadores[jogSelecionado].GetComponent<Jogador>() ;
 
-		j.setPersonagem( ( (j.NumeroPersonagem)%j.NPersonagens+1 ) ,this.sexo);
+		j.setPersonagem( ( (j.NumeroPersonagem)%j.NPersonagens+1 ));
 
 	}
 	public void SelecionarAnteriorPersonagem(){
@@ -154,9 +158,9 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 		Jogador j = jogadores[jogSelecionado].GetComponent<Jogador>() ;
 
 		int p = ((j.NumeroPersonagem-1%j.NPersonagens));
-		p= p<1? 6:p;
+		p= p<0? 8:p;
 		Debug.Log(((j.NumeroPersonagem%j.NPersonagens)-1)+" "+p);
-		j.setPersonagem(p,this.sexo);
+		j.setPersonagem(p);
 
 
 	}
@@ -166,6 +170,6 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 		}
 		this.sexo = !sexo;
 		Jogador j = jogadores[jogSelecionado].GetComponent<Jogador>() ;
-		j.setPersonagem( j.NumeroPersonagem,this.sexo);
+		j.setPersonagem( j.NumeroPersonagem);
 	}
 }

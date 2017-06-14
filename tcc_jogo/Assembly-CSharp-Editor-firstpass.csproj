@@ -251,7 +251,6 @@
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\drawable\common_plus_signin_btn_icon_light.xml" />
      <None Include="Assets\Plugins\Android\mediarouter\res\values-eu-rES\strings.xml" />
      <None Include="Assets\Plugins\Android\mediarouter\res\values-zh-rCN\strings.xml" />
-     <None Include="Assets\Resources\img\design\freefantasygui\png\README.txt" />
      <None Include="Assets\Plugins\Android\appcompat\res\values-en-rGB\strings.xml" />
      <None Include="Assets\Plugins\Android\mediarouter\res\values-ky-rKG\strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-pt-rBR\wallet_strings.xml" />
@@ -412,7 +411,6 @@
      <None Include="Assets\Plugins\Android\mediarouter\res\drawable\mr_ic_media_route_connecting_mono_light.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-fa\base_strings.xml" />
      <None Include="Assets\Plugins\Android\mediarouter\res\values-et-rEE\strings.xml" />
-     <None Include="Assets\Resources\img\design\freegui\png\README.txt" />
      <None Include="Assets\Plugins\Android\mediarouter\res\values-is-rIS\strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-ru\wallet_strings.xml" />
      <None Include="Assets\Plugins\Android\appcompat\res\values-zu\strings.xml" />

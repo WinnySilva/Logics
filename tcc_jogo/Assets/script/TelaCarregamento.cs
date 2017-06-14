@@ -11,7 +11,7 @@ public class TelaCarregamento : MonoBehaviour {
 	private GameObject data;
 	public   const  int MENU = 0;
 	public   const  int CREDITOS=1, ESCOLHAPERSONAGEM=2, CARREGAMENTO=3, 
-	CLASSIFICACAO=4,PARTIDA=5,MAPA=6,CONECTAR_CHROMECAST=7, AGUARDANDO_JOGADORES=8;
+	CLASSIFICACAO=4,PARTIDA=5,MAPA=6,CONECTAR_CHROMECAST=7, AGUARDANDO_JOGADORES=8, EXPLICACAO=9;
 	private Persistencia p;
 	void Awake(){
 		data = GameObject.Find("persistencia");
@@ -62,6 +62,10 @@ public class TelaCarregamento : MonoBehaviour {
 		case TelaCarregamento.AGUARDANDO_JOGADORES :
 			this.transform.Find("carregando_identificacao").GetComponent<Text>().text=
 				"NÚMERO DE JOGADORES";
+			break;
+		case TelaCarregamento.EXPLICACAO:
+			this.transform.Find("carregando_identificacao").GetComponent<Text>().text=
+				"INSTRUÇÕES";
 			break;
 		default:
 			proximacena = 0;			

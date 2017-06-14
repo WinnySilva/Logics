@@ -29,7 +29,15 @@ import java.util.logging.Logger;
 public class GenerateFromTemplate {
     
      public static void main(String[] args){
-        String pathTemplate ;
+        
+         /**numero de sentencas **/
+         int level = 2; 
+         /** numero de paginas com 9 cartas **/ 
+         int paginas = 7; 
+         /**classe que fornece as sentencas **/
+         GeradorQuestao gQ = new GeradorQuestao("./sentencas1.csv");
+          
+         String pathTemplate ;
             String pathSaidaCartas;
             
             PdfReader template;
@@ -38,11 +46,10 @@ public class GenerateFromTemplate {
            
             AcroFields form;            
            String n;
-           GeradorQuestao gQ = new GeradorQuestao("./sentencas1.csv");
+           
            String cards[] ;
            pathTemplate = "./cartasAzuis.pdf";
-          int level =2;
-          int paginas =1;
+          
          try {
             
             
@@ -55,15 +62,13 @@ public class GenerateFromTemplate {
                 template = new PdfReader(pathTemplate);
                 cartas = new PdfStamper(template, new FileOutputStream(pathSaidaCartas));
 
-                
-
                 form = cartas.getAcroFields();
                 for (int i = 0; i < 9; i++) {
                     //n = (i>0)?"_"+i:"";  
                     n = "_" + i;
                     cards = gQ.GerarSentencas(level);
                     int n_card = (j==0)?(i + j*10)+1:(i + j*10);
-                    form.setField("pergunta" + n, ""+n_card+"\n"+ cards[0]);
+                    form.setField("pergunta" + n, ""+level+n_card+"\n"+ cards[0]);
                     form.setField("resposta" + n, cards[1]);
                     
                     form.setFieldProperty("resposta", "textcolor", BaseColor.RED, null);
