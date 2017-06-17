@@ -36,7 +36,7 @@ public class ManagerSceneTopLevel : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		Debug.Log(""+debugInfo() );
+		//Debug.Log(""+debugInfo() );
 	}
 
 	public string debugInfo(){

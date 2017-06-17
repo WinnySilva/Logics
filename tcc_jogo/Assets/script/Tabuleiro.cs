@@ -47,18 +47,22 @@ public class Tabuleiro : MonoBehaviour {
 
 		peao.transform.SetParent(casa.transform);
 		peao.transform.position= casa.transform.position;
-
+		float[] posX = {0,31,-31,62,-62};
 		//casa destino
 		if(casa.transform.childCount !=0){
 			
 			Rect rc = casa.GetComponent<RectTransform>().rect;
-			float offset = (float)(rc.width/casa.transform.childCount+1);
-	//		Debug.Log("offset"+offset+" min: "+rc.xMin+" max: "+rc.xMax);
-			float x = - offset * (float)(casa.transform.childCount/2);//+casa.transform.position.x
-			for(int i=0; i<casa.transform.childCount;i++ ){
-				casa.transform.GetChild(i).localPosition = new Vector3(x,
+			int nChild = casa.transform.childCount;
+			float offset = (float)(rc.width/nChild+1);
+			Debug.Log("destino::: offset "+offset+" min: "+rc.xMin+" max: "+rc.xMax+" "+(nChild%2));
+			float x = - offset * (float)(nChild/2);//+casa.transform.position.x
+			for(int i=0; i<nChild;i++ ){
+				
+					casa.transform.GetChild(i).localPosition = new Vector3(posX[i],
 					0,
 					0);
+				
+
 //				Debug.Log(x+" -- ");
 				x+=offset;
 			}
@@ -71,23 +75,27 @@ public class Tabuleiro : MonoBehaviour {
 		casa = auxLinha.transform.GetChild(coluna).gameObject;
 		if(casa.transform.childCount !=0){
 			Rect rc = casa.GetComponent<RectTransform>().rect;
-			float offset = (float)(rc.width/casa.transform.childCount+1);
-			//		Debug.Log("offset"+offset+" min: "+rc.xMin+" max: "+rc.xMax);
+			int nChild = casa.transform.childCount;
+			float offset = (float)(rc.width/nChild+1);
+			Debug.Log("inicial::: offset "+offset+" min: "+rc.xMin+" max: "+rc.xMax+" "+(nChild%2));
 			float x = - offset * (float)(casa.transform.childCount/2);//+casa.transform.position.x
-			for(int i=0; i<casa.transform.childCount;i++ ){
-				casa.transform.GetChild(i).localPosition = new Vector3(x,
-					0,
-					0);
-				x+=offset;
+			for(int i=0; i<nChild;i++ ){
+				
+					casa.transform.GetChild(i).localPosition = new Vector3(posX[i] ,
+							0,
+							0);
+						Debug.Log("x: "+x);
+
+					x+=offset;
 			}
 		}
-
-
 
 		jogador.GetComponent<Jogador>().PosTabuleiro = destinoPos;
 		peao.transform.localScale = new Vector3(0.05f,0.05f,1);
 
 	}
+
+
 	public Transform GetCasaTransform(int pos){
 		int linha,coluna;
 		if(pos>=nCasas){
@@ -110,7 +118,7 @@ public class Tabuleiro : MonoBehaviour {
 	//   3
 	private void gerarTabuleiro(){
 		Debug.Log(" GERANDO TABULEIRO");
-		int[][] dirCasas = persistencia.CasasTabuleiro;
+		int[] dirCasas = persistencia.CasasTabuleiro;
 
 		int dirCount=0;
 		int linha = tabuleiro.transform.childCount-1 ;
@@ -123,7 +131,7 @@ public class Tabuleiro : MonoBehaviour {
 			//   1
 			// 4 0 2
 			//   3
-			switch(dirCasas[i][0]){
+			switch(dirCasas[i]){
 			case 0:
 				break;
 			case 1:

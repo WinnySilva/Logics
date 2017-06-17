@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 public class TelaCarregamento : MonoBehaviour {
 
@@ -78,15 +79,36 @@ public class TelaCarregamento : MonoBehaviour {
 		SceneManager.LoadScene(proximacena);
 	}
 
-	// Use this for initialization
-	void Start () {
+
+	private void loadPartida(){
+		Debug.Log(" CARREGANDO: MAPA");
+
+		// carrega gerador de questoes
+		GeradorQuestao gquestao;
+		gquestao = new GeradorQuestao();
+
+		if(p.mapas == null){
+			p.mapas = loadMaps();
+			p.partidasJogadas=0;
+		}else{
+			p.partidasJogadas++;
+		}
+
+		int mapaNum= p.partidasJogadas % p.mapas.ToArray().Length ;
+		Debug.Log(" HÁ "+p.mapas.ToArray().Length+" MAPA(S)" );
+		/*
+		persistencia.NCasasTabuleiro = casasConfig.Length;
+		persistencia.CasasTabuleiro = casasConfig;
+		persistencia.gQuestao = gquestao;
+		*/
+		int [] mapaAux =  ((List<int> )p.mapas.ToArray()[mapaNum]).ToArray(); 
+
+		p.NCasasTabuleiro = mapaAux.Length ;
+		p.CasasTabuleiro = mapaAux;
+		p.gQuestao = gquestao;
 
 	}
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	private void loadPartida(){
+	private ArrayList loadMaps(){
 		Debug.Log(" CARREGANDO: MAPA");
 		//carrega mapa
 		string path = "./Assets/Resources/maps/mapa_.csv";
@@ -103,34 +125,25 @@ public class TelaCarregamento : MonoBehaviour {
 
 		string[] splitSeparador= new string[] {";","\n"};
 		string[] split = text.Split(splitSeparador,StringSplitOptions.RemoveEmptyEntries);
-
-		int nCasas = split.Length/2;
-		int[][] casasConfig = new int[nCasas][];
-		data.GetComponent<Persistencia>().CasasTabuleiro = new int[nCasas][];
-
+		ArrayList maps = new ArrayList();
+		List<int> mapAux = new List<int>();
+		Debug.Log(text);
 		int aux=0;
+		for(int i=0; i< split.Length; i++ ){
+			//Debug.Log("CARREGADO DO MAPA: "+split[i]+" "+i+"/"+split.Length);
+			if(split[i].Contains("*")  ){
+				maps.Add(mapAux);
+				mapAux = new List<int>();
 
-		for(int i=0; i< split.Length;i++ ){
-
-			casasConfig[aux] = new int[2];
-
-			casasConfig[aux][0] = int.Parse(split[i]) ;
-			i++;
-			casasConfig[aux][1] = int.Parse(split[i]) ;
-			aux++;
+			}else{
+				aux = int.Parse(split[i]);
+				mapAux.Add(aux);
+			}
 		}
+		maps.Add(mapAux);
+		//Persistencia pers = data.GetComponent<Persistencia>();//.CasasTabuleiro = new int[nCasas][];
 
-		// carrega gerador de questoes
-		GeradorQuestao gquestao;
-		gquestao = new GeradorQuestao();
-
-
-		data.GetComponent<Persistencia>().NCasasTabuleiro = casasConfig.Length;
-		data.GetComponent<Persistencia>().CasasTabuleiro = casasConfig;
-		data.GetComponent<Persistencia>().gQuestao = gquestao;
-
+		return maps;
 	}
-
-
 	
 }

@@ -23,7 +23,7 @@ public class classificacaoManager : ManagerSceneTopLevel {
 		int deltaY=3;
 
 		for(int i=0; i<jogadorInf.Length; i++){
-			Debug.Log(jogadorInf[i].nick+" "+jogadorInf[i].pontuacao+" ");
+			Debug.Log("classificação: "+jogadorInf[i].nick+" "+jogadorInf[i].pontuacao+" ");
 			classif[i]= Instantiate(Resources.Load("prefabs/classificados") ) as GameObject;
 			classif[i].transform.GetChild(0).GetComponentInChildren<Text>().text = jogadorInf[i].nick+" - "+jogadorInf[i].pontuacao+(jogadorInf[i].pontuacao>1?" pts":" pt" )  ;
 			classif[i].transform.GetChild(1).GetComponentInChildren<Text>().text = (i+1)+"º" ;

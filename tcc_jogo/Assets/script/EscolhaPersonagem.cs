@@ -17,11 +17,14 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 	private bool sexo=true;
 	private bool allSelected= false;
 	public Text nick;
+	public Text nick2;
 	public Text pontuacao;
 	public GameObject placeholderPersonagem;
 
+
 	// Use this for initialization
-	void Start () {
+	void Awake () {
+		base.setCommom();
 		iniciarJogadores(2);
 		SelecionarJogador(0);
 		//nick.gameObject.transform.position = Camera.main.ViewportToWorldPoint(new Vector3());
@@ -56,7 +59,8 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 				jogadores[i].name="JOGADOR"+i;
 				jog.setPersonagem(0);
 				//	jogadores[i].GetComponent<RectTransform>().localPosition;
-				jog.Nick="JOGADOR "+i;
+				jog.nick="JOGADOR "+i;
+
 				jog.SetScalePersonagem(new Vector3(0.007f,0.0047f,0));
 			}
 			else{
@@ -131,6 +135,8 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 
 		nick.text =
 			jogadores[jogSelecionado].GetComponent<Jogador>().Nick; 
+		nick2.text =
+			jogadores[jogSelecionado].GetComponent<Jogador>().Nick;
 		pontuacao.text =
 			""+jogadores[jogSelecionado].GetComponent<Jogador>().Pontuacao+" "+(jogadores[jogSelecionado].GetComponent<Jogador>().Pontuacao==1?"ponto":"pontos" ) ;
 		
@@ -147,9 +153,10 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 			return;
 		}
 		Jogador j = jogadores[jogSelecionado].GetComponent<Jogador>() ;
-
-		j.setPersonagem( ( (j.NumeroPersonagem)%j.NPersonagens+1 ));
-
+		int n= j.NumeroPersonagem +1;
+		n = (n>8)?0:n;
+		j.setPersonagem(n);
+		Debug.Log("personagem: "+n+"/"+j.NPersonagens);
 	}
 	public void SelecionarAnteriorPersonagem(){
 		if(allSelected){
@@ -159,7 +166,7 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 
 		int p = ((j.NumeroPersonagem-1%j.NPersonagens));
 		p= p<0? 8:p;
-		Debug.Log(((j.NumeroPersonagem%j.NPersonagens)-1)+" "+p);
+		Debug.Log("personagem: "+ ((j.NumeroPersonagem%j.NPersonagens)-1)+" "+p);
 		j.setPersonagem(p);
 
 

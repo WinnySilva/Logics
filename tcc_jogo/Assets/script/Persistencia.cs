@@ -11,10 +11,12 @@ public class Persistencia : MonoBehaviour {
 	public JogadorInfo[] jogadoresInfo;
 
 	public int nJogadores=0;
-	public int[][] casasTabuleiro;
+	public int[] casasTabuleiro;
 	public int nCasasTabuleiro;
 
+	public ArrayList mapas;
 	public GeradorQuestao gQuestao;
+	public int partidasJogadas;
 	void Awake(){
 		
 		this.gameObject.name= "persistencia";
@@ -58,7 +60,7 @@ public class Persistencia : MonoBehaviour {
 		}
 	}
 
-	public int[][] CasasTabuleiro {
+	public int[]CasasTabuleiro {
 		get {
 			return casasTabuleiro;
 		}

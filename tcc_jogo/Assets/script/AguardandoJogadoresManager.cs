@@ -37,8 +37,11 @@ public class AguardandoJogadoresManager : ManagerSceneTopLevel {
 		number_show.text= ""+count_jogadores;
 
 		base.persistencia.jogadoresInfo = new JogadorInfo[count_jogadores];
+		JogadorInfo info; 
 		for (int i=0; i<count_jogadores;i++){
-			persistencia.jogadoresInfo[i] = new JogadorInfo();			
+			info = new JogadorInfo();
+			info.nick = "JOGADOR "+(i+1);
+			persistencia.jogadoresInfo[i] = info;			
 		}
 		persistencia.CarregarCena(TelaCarregamento.ESCOLHAPERSONAGEM);
 	}

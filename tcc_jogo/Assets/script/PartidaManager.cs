@@ -13,15 +13,20 @@ public class PartidaManager : ManagerSceneTopLevel {
 	public GameObject mensagemPopUpTV;
 	public GameObject opcoes;
 	public GameObject jogadoresPlaceHolder;
+	public GameObject coroa;
+	public GameObject dice;
+	public GameObject backgroundTV;
 	//bool showpopup = false;
 	public int showpopupsecs=0;
 	public Text nickJogador_tv;
 	public Text nickJogador_cel;
 	public Text pontosJogador;
-	public Image jogadorAvatar;
 	public Text msgPopUp;
 	public AudioSource respostaCertaAudio;
 	public AudioSource respostaErradaAudio;
+	public AudioSource vitoriaAudio;
+	public Image canvasCelularBackground;
+	public Image jogadorAvatar;
 	#endregion
 
 	#region Private data
@@ -79,7 +84,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 	#region Start
 	void Start () {
 		StartCoroutine(Controle() );
-
+	//	InvokeRepeating("refreshScreen", 2.0f, 2f);
 	//	questionamentos = new Thread(_questionamento);
 	//	questionamentos.Start();
 	}
@@ -102,6 +107,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 
 	private IEnumerator Controle(){
 		int posAtual;
+		int rnd=0;
 		while(estadoMaquina > -1){
 			Debug.Log("jogador: "+jogadorSelecionado);
 		switch(estadoMaquina){
@@ -117,6 +123,10 @@ public class PartidaManager : ManagerSceneTopLevel {
 			if(!anim){
 
 				Debug.Log("PERGUNTANDO");
+					canvasCelularBackground.color = new Color(1f,1f,1f);
+					dice.GetComponent<Animator>().SetInteger("numberDice",0);
+					dice.transform.localPosition = new Vector3(1,1,1);
+				
 				Pergunta(nSen);
 					this.nickJogador_tv.text="JOGADOR "+(jogadorSelecionado+1);
 					this.nickJogador_cel.text="JOGADOR "+(jogadorSelecionado+1);
@@ -135,6 +145,16 @@ public class PartidaManager : ManagerSceneTopLevel {
 					condRespondido = false;
 					ShowMessage(false,"",false,false);
 					estadoMaquina = MOVENDO;
+						if(TesteResposta()){
+							rnd = Random.Range(1,6);
+							dice.transform.localPosition = new Vector3(626f,-300f,45f);
+							dice.GetComponent<Animator>().SetInteger("numberDice",rnd);
+							canvasCelularBackground.color = new Color(0,1f,0);
+							this.respostaCertaAudio.Play();
+						}else{
+							canvasCelularBackground.color = new Color(1f,0,0);
+							this.respostaErradaAudio.Play();
+						}
 				}
 			}
 			break;
@@ -144,13 +164,13 @@ public class PartidaManager : ManagerSceneTopLevel {
 				Debug.Log("MOVENDO");
 				if(TesteResposta()){
 					posAtual = jogadores[jogadorSelecionado].GetComponent<Jogador>().PosTabuleiro;
-						int rnd = Random.Range(1,6 );
 					jogadores[jogadorSelecionado].GetComponent<Jogador>().Pontuacao+=nSen;
-					MoverPeao(jogadorSelecionado,posAtual+rnd);// tabuleiro.GetComponent<Tabuleiro>().NCasas);//
-						this.respostaCertaAudio.Play();
-					}else{
-						this.respostaErradaAudio.Play();
-					}
+						MoverPeao(jogadorSelecionado,posAtual+rnd);// tabuleiro.GetComponent<Tabuleiro>().NCasas);//
+
+						refreshScreen();
+					}//else{
+						
+					//}
 				posAtual = jogadores[jogadorSelecionado].GetComponent<Jogador>().PosTabuleiro;
 
 					//testa se chegou ao final
@@ -160,7 +180,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 						jogadorSelecionado = (jogadorSelecionado+ 1)%jogadores.Length ;
 						estadoMaquina = INICIO;
 					}
-				
+
 
 			}
 			break;
@@ -169,7 +189,8 @@ public class PartidaManager : ManagerSceneTopLevel {
 					Debug.Log("TERMINO GG");
 					ShowMessage(true, " PARABÉNS\n"+jogadores[jogadorSelecionado].GetComponent<Jogador>().Nick,true,false);
 					estadoMaquina = -1;
-					yield return new WaitForSeconds(3);
+					vitoriaAudio.Play();
+					yield return new WaitForSeconds(5);
 					this.persistencia.jogadoresInfo = JogadorInfo.gerarInfo(this.jogadores);
 					this.persistencia.CarregarCena(TelaCarregamento.CLASSIFICACAO);
 				}
@@ -187,6 +208,13 @@ public class PartidaManager : ManagerSceneTopLevel {
 	}
 		
 
+	private void refreshScreen(){
+		backgroundTV.SetActive(false);
+		backgroundTV.SetActive(true);
+		SceneManager.LoadScene( SceneManager.GetActiveScene().buildIndex );
+
+		Debug.Log("desativas e ativas background");
+	}
 	private void Pergunta(int nivel){
 		List<string> sentencas = gQ.GerarSentencas(nivel);
 		string pergunta ="";
@@ -265,7 +293,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 		mensagemPopUpTV.SetActive(showMSG);
 		opcoes.gameObject.SetActive(showOPC);
 		int nchild= mensagemPopUpTV.transform.childCount-1;
-		mensagemPopUpTV.transform.GetChild(nchild).gameObject.SetActive(premiacao);
+		coroa.SetActive(premiacao);
 	}
 
 		

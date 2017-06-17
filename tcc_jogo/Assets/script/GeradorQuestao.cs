@@ -18,15 +18,15 @@ public class GeradorQuestao {
 
 	public GeradorQuestao(){
 		sentencas = new Dictionary<string,bool>();
-		string path = "./Assets/Resources/questions/sentencas2.csv";
-		TextAsset textAsset= Resources.Load("questions/sentencas2") as TextAsset;
+		string path = "./Assets/Resources/questions/sentencas1.csv";
+		TextAsset textAsset= Resources.Load("questions/sentencas1") as TextAsset;
 
 		string text = "";
 		if( textAsset !=null  ){
-			Debug.Log(" CARREGANDO: exists");
+			Debug.Log(" CARREGANDO: "+path);
 			text = textAsset.text;// System.IO.File.ReadAllText(path, Encoding.UTF8);
 		}else{
-			Debug.Log(" CARREGANDO: not exists");
+			Debug.Log(" CARREGANDO: not exist "+path);
 			text = "todos o azul é vermelho;0\n" +
 				"todos coloridos são pretos;0\no sol é quente;1\na pedra é mole;0";
 
@@ -56,7 +56,8 @@ public class GeradorQuestao {
 			sentenca.Add(sentencas.Keys.ElementAt(aux) );
 			//escolhe um operador aleatorio
 			op = Enum.GetNames( typeof(operador));
-			aux = rnd.Next(0, op.Length-1 ); 
+			aux = rnd.Next(0, op.Length);
+
 			sentenca.Add(op[aux]);
 		}
 		sentenca.RemoveAt( sentenca.Count-1 );

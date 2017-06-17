@@ -7,12 +7,14 @@ public class Jogador : MonoBehaviour {
 	private int pos_personagem;
 	private int numeroPersonagem;
 	private bool sexo;
-	private string nick;
+	public string nick;
 	public GameObject peao;
 	public GameObject personagem;
+
 	private int nPersonagens=8; // iniciando no numero 1
 	private bool visivel = true;
 	private int posTabuleiro=0;
+
 	// Use this for initialization
 
 	void Awake(){
@@ -72,31 +74,31 @@ public class Jogador : MonoBehaviour {
 		this.setPersonagem(0);
 	}
 	public JogadorInfo GetInfo(){
-		JogadorInfo jog = new JogadorInfo();
-		jog.enabled = this.enabled;
+		JogadorInfo info = new JogadorInfo();
+		info.enabled = this.enabled;
 		//jog.gameObject = this.gameObject.;
-		jog.name = this.name;
-		jog.nick = this.nick;
-		jog.numeroPersonagem = this.numeroPersonagem;
+		info.name = this.name;
+		info.nick = this.nick;
+		Debug.Log(" nick get info: "+info.nick);
+		info.numeroPersonagem = this.numeroPersonagem;
 	//	jog.peao = this.peao;
-		jog.pontuacao = this.pontuacao;
-		jog.pos_personagem = this.pos_personagem;
-		jog.sexo = this.sexo;
-		jog.visivel = this.visivel;
-		return jog;
+		info.pontuacao = this.pontuacao;
+		info.pos_personagem = this.pos_personagem;
+		info.sexo = this.sexo;
+		info.visivel = this.visivel;
+		Debug.Log(" get info: "+info.nick+" "+info.numeroPersonagem+" "+info.name+" ");
+		return info;
 	}
 	public void SetInfo(JogadorInfo info){
 		this.enabled = info.enabled;
 		this.nick = info.nick;
 		this.nPersonagens = info.nPersonagens;
-
 		this.setPersonagem(info.numeroPersonagem );
 		this.Visibilidade(info.visivel);
-
 		this.name = info.name;
 		this.pontuacao = info.pontuacao;
 		this.pos_personagem = info.pos_personagem;
-
+		Debug.Log(" set info: "+info.nick+" "+info.numeroPersonagem+" "+info.name+" ");
 
 
 	}
@@ -131,10 +133,13 @@ public class Jogador : MonoBehaviour {
 
 	public string Nick {
 		get {
+			Debug.Log(" get nick: "+nick);
 			return nick;
 		}
 		set {
+			
 			this.nick=value;
+			Debug.Log(" set nick: "+nick);
 		}
 	}
 
@@ -177,7 +182,7 @@ public class Jogador : MonoBehaviour {
 		RectTransform rt = peao.GetComponent<RectTransform>();
 		rt.localScale = v;
 	}
-	// PERSON 1 - 6, SEX true=f - false=m		
+	// PERSON 1 - 6, SEX true=f - false=m
 	public void setPersonagem(int person,bool sex){
 
 		string path = "";
@@ -238,34 +243,34 @@ public class Jogador : MonoBehaviour {
 		Color cor_peao;
 		switch(person){
 		case 0:
-			cor_peao= new Color(0,1f,0);
+			cor_peao= new Color((255f/255f), (51f/255f) , (155f/255f));
 			break;
 		case 1:
-			cor_peao= new Color(0,1f,0);
+			cor_peao= new Color(1f ,(153f/255f),0);
 			break;
 		case 2:
-			cor_peao= new Color(0,0,1f);			
+			cor_peao= new Color(0,1f,1f);			
 			break;
 		case 3:
-			cor_peao= new Color(1.000f, 0.000f, 1.00f);
+			cor_peao= new Color(1.000f, 1.000f, 0);
 			break;
 		case 4:
 			cor_peao= new Color(1f,0,0);
 			break;
 		case 5:
-			cor_peao= new Color(1.000f, 0.647f, 0.000f);
+			cor_peao= new Color((153f/255f), (51f/255f), 1f);
 			break;
 		case 6:
-			cor_peao= new Color(0.000f, 0.502f, 0.502f);
+			cor_peao= new Color(0.000f, 0,  (102f/255f) );
 			break;
 		case 7:
-			cor_peao= new Color(0,1f,0);
+			cor_peao= new Color((102f/255f),0f,0);
 			break;
 		case 8:
-			cor_peao= new Color(0,1f,0);
+			cor_peao= new Color(1f, (128f/255f),0);
 			break;
 		default:
-			cor_peao=new Color(0,0,1);
+			cor_peao=new Color(0,0,1f);
 			break;
 		}
 		peao.GetComponent<Image>().color = cor_peao;
