@@ -13,7 +13,7 @@ public class Jogador : MonoBehaviour {
 
 	private int nPersonagens=8; // iniciando no numero 1
 	private bool visivel = true;
-	private int posTabuleiro=0;
+	private int posTabuleiro=9;
 
 	// Use this for initialization
 
@@ -79,14 +79,15 @@ public class Jogador : MonoBehaviour {
 		//jog.gameObject = this.gameObject.;
 		info.name = this.name;
 		info.nick = this.nick;
-		Debug.Log(" nick get info: "+info.nick);
+	//	Debug.Log(" nick get info: "+info.nick);
 		info.numeroPersonagem = this.numeroPersonagem;
 	//	jog.peao = this.peao;
 		info.pontuacao = this.pontuacao;
 		info.pos_personagem = this.pos_personagem;
 		info.sexo = this.sexo;
 		info.visivel = this.visivel;
-		Debug.Log(" get info: "+info.nick+" "+info.numeroPersonagem+" "+info.name+" ");
+		info.posTabuleiro = this.posTabuleiro;
+	//	Debug.Log(" get info: "+info.nick+" "+info.numeroPersonagem+" "+info.name+" ");
 		return info;
 	}
 	public void SetInfo(JogadorInfo info){
@@ -94,11 +95,13 @@ public class Jogador : MonoBehaviour {
 		this.nick = info.nick;
 		this.nPersonagens = info.nPersonagens;
 		this.setPersonagem(info.numeroPersonagem );
+		Debug.Log("info.numeroPersonagem: "+info.numeroPersonagem+" "+this.NumeroPersonagem+" "+this.Nick);
 		this.Visibilidade(info.visivel);
 		this.name = info.name;
 		this.pontuacao = info.pontuacao;
 		this.pos_personagem = info.pos_personagem;
-		Debug.Log(" set info: "+info.nick+" "+info.numeroPersonagem+" "+info.name+" ");
+		this.pos_personagem = info.posTabuleiro;
+	//	Debug.Log(" set info: "+info.nick+" "+info.numeroPersonagem+" "+info.name+" ");
 
 
 	}

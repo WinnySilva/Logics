@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Google.Cast.RemoteDisplay;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ManagerSceneTopLevel : MonoBehaviour {
 
@@ -9,6 +10,9 @@ public class ManagerSceneTopLevel : MonoBehaviour {
 	public GameObject celular_camera;
 	public CastRemoteDisplayManager displayManager;
 	private CastDevice dv;
+
+
+
 
 	void Awake(){
 	//	persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
@@ -71,4 +75,10 @@ public class ManagerSceneTopLevel : MonoBehaviour {
 
 		Debug.Log("DISPLAY ERROR");
 	}
+
+	private void refreshScreen(){
+	//	SceneManager.LoadScene( SceneManager.GetActiveScene().buildIndex );
+	//	Debug.Log("REFRESH");
+	}
+
 }

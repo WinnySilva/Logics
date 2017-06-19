@@ -20,20 +20,64 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 	public Text nick2;
 	public Text pontuacao;
 	public GameObject placeholderPersonagem;
+	private GameObject infoReload;
+	private ReloadInfo info;
 
+	private class ReloadInfo : MonoBehaviour{
+
+		public int sceneNumber;
+		public int jogSelecionado=0;
+		public bool first = true;
+		public GameObject[] jogadores1;
+		public JogadorInfo[] jogadores;
+		public int[] personagensSet;
+		public void personagensNumeros(GameObject[] jog){
+			if(jog == null) return;
+			personagensSet = new int[jog.Length];
+			for (int i=0; i< jog.Length;i++){
+				personagensSet[i]= jog[i].GetComponent<Jogador>().NumeroPersonagem;
+			}
+		}
+	}
 
 	// Use this for initialization
 	void Awake () {
 		base.setCommom();
+
+		infoReload = GameObject.Find("infoReaload") ;
+
+		if(infoReload == null){
+			infoReload = new GameObject();
+			infoReload.AddComponent<ReloadInfo>();
+			info = infoReload.GetComponent<ReloadInfo>();
+			info.jogSelecionado = jogSelecionado;
+			info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
+			info.jogadores1 = this.jogadores;
+			info.name = "infoReaload";
+			info.first=true;
+			DontDestroyOnLoad(infoReload);
+		}else{
+			info = infoReload.GetComponent<ReloadInfo>();
+			info.first=false;
+			jogSelecionado=info.jogSelecionado;
+		}
+	//	Debug.Log("info.first: "+info.first );
 		iniciarJogadores(2);
-		SelecionarJogador(0);
+		info.personagensNumeros(jogadores);
+		SelecionarJogador(jogSelecionado);
 		//nick.gameObject.transform.position = Camera.main.ViewportToWorldPoint(new Vector3());
 	}
-
+	void Start () {
+		InvokeRepeating("refreshScreen", 8.0f, 2f);
+	}
 
 	public void iniciarJogadores(int nJogadores){
-			
+		if(info.first)
 		jogadores = JogadorInfo.gerarJogadores(base.persistencia.jogadoresInfo) ; // GameObject.FindGameObjectsWithTag("Player");
+		else{
+			jogadores =JogadorInfo.gerarJogadores(info.jogadores);
+		}
+
 		bool jogadoresAtivos = jogadores !=null; 
 
 		if( jogadoresAtivos){
@@ -45,14 +89,15 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 			nJog = nJogadores;
 			jogadores = new GameObject[nJog];
 
-			Debug.Log(" NÃO ENCONTRADOS JOGADORES ");
+		//	Debug.Log(" NÃO ENCONTRADOS JOGADORES ");
 		}
+		
 
 		Jogador jog =null;
 		for(int i=0; i<nJog; i++ ){
-			Debug.Log(" jogadoresAtivos: "+jogadoresAtivos);
+	//		Debug.Log("iniciarJogadores && info.first: "+info.first+" ");
 			jog = jogadores[i].GetComponent<Jogador>();
-			if( !jogadoresAtivos || (jogadores[i] == null) ){
+			if( (info.first) && (!jogadoresAtivos || (jogadores[i] == null)) ){
 				jogadores[i] = Instantiate(Resources.Load("prefabs/jogador") ) as GameObject;
 			//	jogadores[i].AddComponent<RectTransform>();
 			//	jogadores[i].AddComponent<Jogador>();
@@ -60,7 +105,7 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 				jog.setPersonagem(0);
 				//	jogadores[i].GetComponent<RectTransform>().localPosition;
 				jog.nick="JOGADOR "+i;
-
+				Debug.Log("inside true iniciarJogadores");
 				jog.SetScalePersonagem(new Vector3(0.007f,0.0047f,0));
 			}
 			else{
@@ -79,22 +124,14 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 			jogadores[i].GetComponent<Jogador>().Visibilidade(false);
 			//jogadores[i].GetComponent<RectTransform>().rect.width=1;
 			//jogadores[i].GetComponent<RectTransform>().rect.height =1;
+
 		}
-
-
 	}
 
 	public void confirmarJogador(){
 		this.jogSelecionado++;
 		if(this.jogSelecionado>=this.nJog){
 			this.allSelected=true;
-		/*
-			GameObject persistencia = new GameObject();
-			persistencia.AddComponent<Persistencia>();
-			Persistencia p=persistencia.GetComponent<Persistencia>();
-			persistencia.name = "persistencia";
-*/
-			//Persistencia persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
 
 			persistencia.nJogadores = jogadores.Length;
 			persistencia.jogadores = new Jogador[jogadores.Length];
@@ -102,21 +139,20 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 
 			for(int i=0; i<jogadores.Length;i++){
 				persistencia.jogadoresInfo[i]= jogadores[i].GetComponent<Jogador>().GetInfo();
-			
 			}
-			/*
-			DontDestroyOnLoad(persistencia);
-*/
-
+			Destroy(infoReload);
 			persistencia.CarregarCena(TelaCarregamento.EXPLICACAO);
 			return;
 		}
+		info.jogSelecionado=jogSelecionado;
+		info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
+		info.personagensNumeros(jogadores);
 		SelecionarJogador(jogSelecionado);
-
 		return;
 	}
 
 	private GameObject SelecionarJogador(int selec){
+		Debug.Log("SelecionarJogador: "+selec+" "+jogSelecionado+" "+jogadores[jogSelecionado].GetComponent<Jogador>().NumeroPersonagem+" "+jogadores.Length );
 		if(selec>nJog){
 			return null;
 		}
@@ -139,15 +175,19 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 			jogadores[jogSelecionado].GetComponent<Jogador>().Nick;
 		pontuacao.text =
 			""+jogadores[jogSelecionado].GetComponent<Jogador>().Pontuacao+" "+(jogadores[jogSelecionado].GetComponent<Jogador>().Pontuacao==1?"ponto":"pontos" ) ;
-		
+
+		info.jogSelecionado=jogSelecionado;
+		info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
 		return jog;
 	}
+
 	public GameObject GetJogador(int n){
 		if(n>-1 && n<nJog){
 			return jogadores[n];
 		}
 		return null;
 	}
+
 	public void SelecionarProximoPersonagem(){
 		if(allSelected){
 			return;
@@ -156,7 +196,10 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 		int n= j.NumeroPersonagem +1;
 		n = (n>8)?0:n;
 		j.setPersonagem(n);
-		Debug.Log("personagem: "+n+"/"+j.NPersonagens);
+
+		info.jogSelecionado=jogSelecionado;
+		info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
+		info.jogadores1 = this.jogadores;
 	}
 	public void SelecionarAnteriorPersonagem(){
 		if(allSelected){
@@ -166,11 +209,14 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 
 		int p = ((j.NumeroPersonagem-1%j.NPersonagens));
 		p= p<0? 8:p;
-		Debug.Log("personagem: "+ ((j.NumeroPersonagem%j.NPersonagens)-1)+" "+p);
+	//	Debug.Log("personagem: "+p+"/"+j.NPersonagens);
 		j.setPersonagem(p);
 
-
+		info.jogSelecionado=jogSelecionado;
+		info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
+		info.jogadores1 = this.jogadores;
 	}
+
 	public void ToggleSexo(){
 		if(allSelected){
 			return;
@@ -179,4 +225,5 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 		Jogador j = jogadores[jogSelecionado].GetComponent<Jogador>() ;
 		j.setPersonagem( j.NumeroPersonagem);
 	}
+
 }

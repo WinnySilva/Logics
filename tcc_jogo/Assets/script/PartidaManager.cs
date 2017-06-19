@@ -44,19 +44,54 @@ public class PartidaManager : ManagerSceneTopLevel {
 	int jogadorSelecionado=0;
 	int nSen = 2;
 	int estadoMaquina = 0;
+	private GameObject infoReload;
+	private ReloadInfo info;
+
+	private class ReloadInfo : MonoBehaviour{
+
+		public int jogSelecionado=0;
+		public bool first = true;
+		public JogadorInfo[] jogadores;
+		public string pergunta;
+		public bool resposta;
+		public int[] posTab;
+	}
+
+
 	#endregion
 
 	#region Awake
 	// Use this for initialization
 	void Awake(){
 		base.setCommom();
-		Debug.Log("PARTIDA MANAGER");
-		//persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
-		if(base.persistencia==null){
-			Debug.Log("persistencia é null ");
 
+		infoReload = GameObject.Find("infoReaload") ;
+
+		if(infoReload == null){
+			infoReload = new GameObject();
+			infoReload.AddComponent<ReloadInfo>();
+			info = infoReload.GetComponent<ReloadInfo>();
+			info.jogSelecionado = jogadorSelecionado;
+			info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
+			//info.jogadores1 = this.jogadores;
+			info.name = "infoReaload";
+			info.first=true;
+			DontDestroyOnLoad(infoReload);
+		}else{
+			info = infoReload.GetComponent<ReloadInfo>();
+			info.first=false;
+			jogadorSelecionado = info.jogSelecionado;
+		//	jogadores = JogadorInfo.gerarJogadores(info.jogadores) ;
 		}
-		JogadorInfo[] jogadorInf = base.persistencia.jogadoresInfo;
+
+		Debug.Log("PARTIDA MANAGER");
+		JogadorInfo[] jogadorInf ;
+		if(info.first){
+			jogadorInf = base.persistencia.jogadoresInfo;
+		}
+		else{
+			jogadorInf = info.jogadores ;
+		}
 		jogadores = new GameObject[jogadorInf.Length];
 	
 		mensagemPopUpTV.SetActive(false);
@@ -72,11 +107,21 @@ public class PartidaManager : ManagerSceneTopLevel {
 			jogadores[i].transform.SetParent(jogadoresPlaceHolder.transform);
 			jogadores[i].GetComponent<Jogador>().Visibilidade(true);
 			msg+=jogadores[i].name+"\n";
-			tabuleiro.GetComponent<Tabuleiro>().SetarPeao(0,jogadores[i].GetComponent<Jogador>());
+
+			if(info.first){
+				tabuleiro.GetComponent<Tabuleiro>().SetarPeao(0,jogadores[i].GetComponent<Jogador>());
+			}else{
+				Debug.Log(i+" setar pos: "+jogadores[i].GetComponent<Jogador>().PosTabuleiro+" info: "+jogadorInf[i].posTabuleiro);
+				tabuleiro.GetComponent<Tabuleiro>().SetarPeao(jogadores[i].GetComponent<Jogador>().PosTabuleiro,jogadores[i].GetComponent<Jogador>());
+
+			}
+
 		}
 	//	msgPopUp = mensagemPopUpTV.GetComponentInChildren<Text>();
 		ShowMessage(false,msg,false,false);
 		gQ = persistencia.gQuestao;
+		info.jogSelecionado = jogadorSelecionado;
+		info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
 
 	}
 	#endregion
@@ -84,7 +129,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 	#region Start
 	void Start () {
 		StartCoroutine(Controle() );
-	//	InvokeRepeating("refreshScreen", 2.0f, 2f);
+		InvokeRepeating("refreshScreen", 10.0f, 5f);
 	//	questionamentos = new Thread(_questionamento);
 	//	questionamentos.Start();
 	}
@@ -93,8 +138,17 @@ public class PartidaManager : ManagerSceneTopLevel {
 	#region Update
 	// Update is called once per frame
 	void Update () {
-		Debug.Log("Partida Manager UPDATE: "+base.debugInfo() );
-
+//		Debug.Log("Partida Manager UPDATE: "+base.debugInfo() );
+		info.jogSelecionado = jogadorSelecionado;
+	//	info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
+		info.pergunta = this.msgPopUp.text;
+		info.resposta= this.respostaCerta;
+		info.posTab = new int[this.jogadores.Length];
+		string pos="pos ";
+		for(int i=0; i<this.jogadores.Length;i++ ){
+			pos+=" "+jogadores[i].GetComponent<Jogador>().PosTabuleiro;
+		}
+		Debug.Log(pos);
 	}
 	#endregion
 
@@ -167,7 +221,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 					jogadores[jogadorSelecionado].GetComponent<Jogador>().Pontuacao+=nSen;
 						MoverPeao(jogadorSelecionado,posAtual+rnd);// tabuleiro.GetComponent<Tabuleiro>().NCasas);//
 
-						refreshScreen();
+						//refreshScreen();
 					}//else{
 						
 					//}
@@ -178,6 +232,7 @@ public class PartidaManager : ManagerSceneTopLevel {
 						estadoMaquina = TERMINO;	
 					}else{
 						jogadorSelecionado = (jogadorSelecionado+ 1)%jogadores.Length ;
+						info.jogSelecionado = jogadorSelecionado;
 						estadoMaquina = INICIO;
 					}
 

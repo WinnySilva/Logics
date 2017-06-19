@@ -7,13 +7,13 @@ using System.IO;
 using System.Collections.Generic;
 
 public class TelaCarregamento : MonoBehaviour {
-
 	private int proximacena;
 	private GameObject data;
 	public   const  int MENU = 0;
 	public   const  int CREDITOS=1, ESCOLHAPERSONAGEM=2, CARREGAMENTO=3, 
 	CLASSIFICACAO=4,PARTIDA=5,MAPA=6,CONECTAR_CHROMECAST=7, AGUARDANDO_JOGADORES=8, EXPLICACAO=9;
 	private Persistencia p;
+
 	void Awake(){
 		data = GameObject.Find("persistencia");
 		//data = new GameObject(); 

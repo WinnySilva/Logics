@@ -11,9 +11,13 @@ public class JogadorInfo{
 	public bool visivel = true;
 	public bool enabled;
 	public string name;
+	public int posTabuleiro;
 	// Use this for initialization
 
 	public static JogadorInfo[] gerarInfo(GameObject[] jogadores){
+		if(jogadores==null){
+			return null;
+		}
 		JogadorInfo[] ji = new JogadorInfo[jogadores.Length];
 		for(int i=0; i<jogadores.Length;i++){
 			ji[i] = jogadores[i].GetComponent<Jogador>().GetInfo();
