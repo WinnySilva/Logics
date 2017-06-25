@@ -5,39 +5,6 @@ sceneSetups:
 - path: Assets/scenes/televisao/_carregamento.unity
   isLoaded: 0
   isActive: 0
-- path: Assets/scenes/televisao/_carregamento.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/scenes/televisao/_carregamento.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/scenes/televisao/_carregamento.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/scenes/televisao/_carregamento.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/scenes/televisao/_carregamento.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/scenes/televisao/_carregamento.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/scenes/televisao/_carregamento.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/scenes/televisao/_carregamento.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/scenes/televisao/_carregamento.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/scenes/televisao/_carregamento.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/scenes/televisao/_carregamento.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/scenes/televisao/_main.unity
+- path: "Assets/scenes/phoneOnly/Ph_classifica\xE7\xE3o_jogadores.unity"
   isLoaded: 1
   isActive: 1

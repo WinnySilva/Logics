@@ -36,6 +36,10 @@ public class TelaCarregamento : MonoBehaviour {
 		case TelaCarregamento.ESCOLHAPERSONAGEM:
 			this.transform.Find("carregando_identificacao").GetComponent<Text>().text=
 				"Escolha de Personagem";
+			if(!p.isChromecast){
+				proximacena = 10;
+			}
+
 			break;
 		case CARREGAMENTO:
 			Debug.Log(3);
@@ -44,6 +48,9 @@ public class TelaCarregamento : MonoBehaviour {
 		case TelaCarregamento.CLASSIFICACAO:
 			this.transform.Find("carregando_identificacao").GetComponent<Text>().text=
 				"Classifição Geral";
+			if(!p.isChromecast){
+				proximacena = 11;
+			}
 			break;
 		case TelaCarregamento.MAPA:
 			this.transform.Find("carregando_identificacao").GetComponent<Text>().text=
@@ -55,6 +62,10 @@ public class TelaCarregamento : MonoBehaviour {
 			Debug.Log(" CARREGANDO: partida");
 			loadPartida();
 			Debug.Log(" CARREGANDO: partida carregada");
+			if(!p.isChromecast){
+				proximacena = 12;
+			}
+
 			break;
 		case TelaCarregamento.CONECTAR_CHROMECAST:
 			this.transform.Find("carregando_identificacao").GetComponent<Text>().text=
@@ -63,10 +74,17 @@ public class TelaCarregamento : MonoBehaviour {
 		case TelaCarregamento.AGUARDANDO_JOGADORES :
 			this.transform.Find("carregando_identificacao").GetComponent<Text>().text=
 				"NÚMERO DE JOGADORES";
+			if(!p.isChromecast){
+				proximacena = 13;
+			}
 			break;
 		case TelaCarregamento.EXPLICACAO:
 			this.transform.Find("carregando_identificacao").GetComponent<Text>().text=
 				"INSTRUÇÕES";
+			if(!p.isChromecast){
+				proximacena = 14;
+			}
+
 			break;
 		default:
 			proximacena = 0;			
@@ -75,7 +93,8 @@ public class TelaCarregamento : MonoBehaviour {
 
 		}
 //		Debug.Log(proximacena);
-		Debug.Log(" CARREGAR CENA ");
+		Debug.Log(" CARREGAR CENA "+proximacena);
+
 		SceneManager.LoadScene(proximacena);
 	}
 

@@ -14,6 +14,7 @@ public class Persistencia : MonoBehaviour {
 	public int[] casasTabuleiro;
 	public int nCasasTabuleiro;
 
+	public bool isChromecast = false;
 	public ArrayList mapas;
 	public GeradorQuestao gQuestao;
 	public int partidasJogadas;

@@ -43,8 +43,8 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 	// Use this for initialization
 	void Awake () {
 		base.setCommom();
-
-		infoReload = GameObject.Find("infoReaload") ;
+		/*
+	infoReload = GameObject.Find("infoReaload") ;
 
 		if(infoReload == null){
 			infoReload = new GameObject();
@@ -61,9 +61,10 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 			info.first=false;
 			jogSelecionado=info.jogSelecionado;
 		}
-	//	Debug.Log("info.first: "+info.first );
+	*/
+		//	Debug.Log("info.first: "+info.first );
 		iniciarJogadores(2);
-		info.personagensNumeros(jogadores);
+		//info.personagensNumeros(jogadores);
 		SelecionarJogador(jogSelecionado);
 		//nick.gameObject.transform.position = Camera.main.ViewportToWorldPoint(new Vector3());
 	}
@@ -72,11 +73,11 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 	}
 
 	public void iniciarJogadores(int nJogadores){
-		if(info.first)
+	//	if(info.first)
 		jogadores = JogadorInfo.gerarJogadores(base.persistencia.jogadoresInfo) ; // GameObject.FindGameObjectsWithTag("Player");
-		else{
-			jogadores =JogadorInfo.gerarJogadores(info.jogadores);
-		}
+	//	else{
+	//	jogadores =JogadorInfo.gerarJogadores(info.jogadores);
+	//	}
 
 		bool jogadoresAtivos = jogadores !=null; 
 
@@ -97,7 +98,7 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 		for(int i=0; i<nJog; i++ ){
 	//		Debug.Log("iniciarJogadores && info.first: "+info.first+" ");
 			jog = jogadores[i].GetComponent<Jogador>();
-			if( (info.first) && (!jogadoresAtivos || (jogadores[i] == null)) ){
+			if(  (!jogadoresAtivos || (jogadores[i] == null)) ){
 				jogadores[i] = Instantiate(Resources.Load("prefabs/jogador") ) as GameObject;
 			//	jogadores[i].AddComponent<RectTransform>();
 			//	jogadores[i].AddComponent<Jogador>();
@@ -114,6 +115,7 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 
 			jogadores[i].GetComponent<RectTransform>().SetParent(placeholderPersonagem.transform); //(this.GetComponent<RectTransform>());
 			jogadores[i].transform.localPosition=new Vector3(10,0,0);
+			jogadores[i].transform.localScale=new Vector3(11,11,0);
 			//jog.SetPositionPeao( new Vector3(4.11f,-0.42f,0) );
 			//jog.SetScalePeao( new Vector3(0.01f,0.01f,0) );
 			//jog.peao.transform.localPosition = new Vector3(4.11f,-0.42f,0);
@@ -144,10 +146,10 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 			persistencia.CarregarCena(TelaCarregamento.EXPLICACAO);
 			return;
 		}
-		info.jogSelecionado=jogSelecionado;
-		info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
-		info.personagensNumeros(jogadores);
-		SelecionarJogador(jogSelecionado);
+	//	info.jogSelecionado=jogSelecionado;
+	//	info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
+/*		/info.personagensNumeros(jogadores);
+*/		SelecionarJogador(jogSelecionado);
 		return;
 	}
 
@@ -176,8 +178,8 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 		pontuacao.text =
 			""+jogadores[jogSelecionado].GetComponent<Jogador>().Pontuacao+" "+(jogadores[jogSelecionado].GetComponent<Jogador>().Pontuacao==1?"ponto":"pontos" ) ;
 
-		info.jogSelecionado=jogSelecionado;
-		info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
+//		info.jogSelecionado=jogSelecionado;
+	//	info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
 		return jog;
 	}
 
@@ -197,9 +199,9 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 		n = (n>8)?0:n;
 		j.setPersonagem(n);
 
-		info.jogSelecionado=jogSelecionado;
-		info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
-		info.jogadores1 = this.jogadores;
+	//	info.jogSelecionado=jogSelecionado;
+	//	info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
+	//	info.jogadores1 = this.jogadores;
 	}
 	public void SelecionarAnteriorPersonagem(){
 		if(allSelected){
@@ -212,9 +214,9 @@ public class EscolhaPersonagem : ManagerSceneTopLevel {
 	//	Debug.Log("personagem: "+p+"/"+j.NPersonagens);
 		j.setPersonagem(p);
 
-		info.jogSelecionado=jogSelecionado;
-		info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
-		info.jogadores1 = this.jogadores;
+	//	info.jogSelecionado=jogSelecionado;
+	//	info.jogadores = JogadorInfo.gerarInfo(jogadores) ;
+	//	info.jogadores1 = this.jogadores;
 	}
 
 	public void ToggleSexo(){

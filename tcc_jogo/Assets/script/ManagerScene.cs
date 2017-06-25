@@ -52,7 +52,12 @@ public class ManagerScene: MonoBehaviour{
 		pauseButton.SetActive(true);
 */
 		Debug.Log("SESSION START");
+		persistencia.isChromecast=true;
 	persistencia.CarregarCena(TelaCarregamento.AGUARDANDO_JOGADORES );
+	}
+	public void SemCast(){
+		persistencia.isChromecast= false;
+		persistencia.CarregarCena(TelaCarregamento.AGUARDANDO_JOGADORES );
 	}
 
 	public void OnRemoteDisplaySessionEnd(CastRemoteDisplayManager manager) {

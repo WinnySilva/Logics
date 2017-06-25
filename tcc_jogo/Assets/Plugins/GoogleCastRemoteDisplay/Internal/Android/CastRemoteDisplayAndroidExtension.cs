@@ -82,7 +82,10 @@ namespace Google.Cast.RemoteDisplay.Internal {
     public void RenderFrame() {
       if (bridge != null) {
         bridge.CallStatic(NATIVE_CALL_RENDER_FRAME);
-      }
+			}else{
+				Debug.Log("BRIDGE NULL");
+			}
+
     }
 
     public void OnAudioFilterRead(float[] data, int channels) {

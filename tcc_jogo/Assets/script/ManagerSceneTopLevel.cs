@@ -16,19 +16,29 @@ public class ManagerSceneTopLevel : MonoBehaviour {
 
 	void Awake(){
 	//	persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
-		displayManager = CastRemoteDisplayManager.GetInstance();
+	/*	displayManager = CastRemoteDisplayManager.GetInstance();
 		displayManager.RemoteDisplayCamera = tv_camera.GetComponent<Camera>() ;
 		displayManager.RemoteAudioListener = tv_camera.GetComponent<AudioListener>();
 		persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
 		Debug.Log("TOP LEVEL");
-		setCommom();
+	*/	setCommom();
+
 	}
 
 	public void setCommom(){
-		displayManager = CastRemoteDisplayManager.GetInstance();
-		displayManager.RemoteDisplayCamera = tv_camera.GetComponent<Camera>() ;
-		displayManager.RemoteAudioListener = tv_camera.GetComponent<AudioListener>();
-		persistencia = GameObject.Find("persistencia").GetComponent<Persistencia>();
+		GameObject p = GameObject.Find("persistencia");
+		if(p!= null ){
+			persistencia = p.GetComponent<Persistencia>();
+			if(persistencia.isChromecast){
+			displayManager = CastRemoteDisplayManager.GetInstance();
+			displayManager.RemoteDisplayCamera = tv_camera.GetComponent<Camera>() ;
+			displayManager.RemoteAudioListener = tv_camera.GetComponent<AudioListener>();
+			}
+		}else{
+			p = new GameObject();
+			p.AddComponent<Persistencia>();
+		}
+		//Application.RegisterLogCallback(LogHandler);
 		Debug.Log("MANAGER SCENE TOP LEVEL");
 	}
 
@@ -79,6 +89,16 @@ public class ManagerSceneTopLevel : MonoBehaviour {
 	private void refreshScreen(){
 	//	SceneManager.LoadScene( SceneManager.GetActiveScene().buildIndex );
 	//	Debug.Log("REFRESH");
+//		tv_camera.SetActive(false);
+//		tv_camera.SetActive(true);
+		Resources.UnloadUnusedAssets();
+		System.GC.Collect();
+	}
+	private void LogHandler(string message, string stacktrace, LogType type)
+	{
+		System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace();
+		// Now use trace.ToString(), or extract the information you want.
+		Debug.Log(trace.ToString() );
 	}
 
 }

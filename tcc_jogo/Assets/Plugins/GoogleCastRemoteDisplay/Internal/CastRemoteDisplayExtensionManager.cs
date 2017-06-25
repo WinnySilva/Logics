@@ -467,7 +467,11 @@ namespace Google.Cast.RemoteDisplay.Internal {
           && (!isApplicationPaused || remoteDisplayTextureUpdated) && isCasting) {
         castRemoteDisplayExtension.RenderFrame();
         remoteDisplayTextureUpdated = false;
-      }
+				Debug.Log("MaybeRenderFrame:RENDER");
+			}else{
+				Debug.Log("MaybeRenderFrame:NOT RENDER");
+			}
+
     }
 
     /**
